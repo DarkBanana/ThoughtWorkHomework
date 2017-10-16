@@ -23,8 +23,14 @@
         private List<Taxi> taxis;/* 出租车列表 */
     }   
     ```
-- ResultMap输出的结果集建模，采用ResultMap<String,List<Taxi>>存储三类提醒（报废提醒、每1万公里保养提醒、定期保养提醒），并重写toString()方法。
+- ResultReport输出的结果集建模，内部存放提醒信息（报废提醒、每1万公里保养提醒、定期保养提醒）以及采用TreeMap存放<Brand,Taxis>健值对，并重写toString()方法。
 
+    ```
+    class ResultReport {
+        private String typeMessage;
+        private TreeMap<String, List<Taxi>> resultMap;
+    }
+    ```
 #### 2）业务功能实现
 
 - 读取输入字符串，并解析成结构化数据，包括提交时间、taxi列表

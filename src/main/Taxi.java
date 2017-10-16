@@ -34,9 +34,9 @@ public class Taxi {
         if (isOverHaul()) {
             cycle = OVERHAUL_CYCLE_MONTH;
         } else if (moreThan3Years) {
-            cycle = MORE_THAN_THREE_YEARS_CYCLE_MONTH;
+            cycle = MORE_THAN_BOUNDARY_YEAR_CYCLE_MONTH;
         } else {
-            cycle = LESS_THAN_THREE_YEARS_CYCLE_MONTH;
+            cycle = LESS_THAN_BOUNDARY_YEAR_CYCLE_MONTH;
         }
         Date noticeDate = getPurchaseTime();
         while (noticeDate.compareTo(submitDate) <= 0) {

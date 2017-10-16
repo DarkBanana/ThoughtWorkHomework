@@ -7,10 +7,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import static constant.Constant.*;
+
 /**
  * 出租车实体类
  */
-@SuppressWarnings("unchecked")
 public class Taxi {
     private String carNumber;/* 车牌号 */
     private Date purchaseTime;/* 购买日期 */
@@ -18,24 +19,24 @@ public class Taxi {
     private int mileage;/* 行驶公里数 */
     private boolean overHaul;/* 有无大修 */
 
-    public boolean isWriteOff(Date submitDate) {
+    private boolean isWriteOff(Date submitDate) {
         return submitDate.compareTo(getWriteOffDate()) >= 0;
     }
 
-    public boolean isBelongToDistanceRelatedNotice(Date submitDate) {
+    boolean isBelongToDistanceRelatedNotice(Date submitDate) {
         int mileageAfterLastMaintenance = getMileage() % 10000;
         return !isBelongToWriteOffNotice(submitDate) && mileageAfterLastMaintenance == 0 || mileageAfterLastMaintenance >= 9500;
     }
 
-    public Date getMaintenanceNoticeDate(Date submitDate) {
+    private Date getMaintenanceNoticeDate(Date submitDate) {
         int cycle;//保养周期，单位为月
         boolean moreThan3Years = DateUtils.truncatedCompareTo(DateUtils.addYears(getPurchaseTime(), 3), submitDate, Calendar.YEAR) <= 0;
         if (isOverHaul()) {
-            cycle = 3;
+            cycle = OVERHAUL_CYCLE;
         } else if (moreThan3Years) {
-            cycle = 6;
+            cycle = MORE_THAN_THREE_YEARS_CYCLE;
         } else {
-            cycle = 12;
+            cycle = LESS_THAN_THREE_YEARS_CYCLE;
         }
         Date noticeDate = getPurchaseTime();
         while (noticeDate.compareTo(submitDate) <= 0) {
@@ -46,7 +47,7 @@ public class Taxi {
         return noticeDate;
     }
 
-    public boolean isBelongToTimeRelatedNotice(Date submitDate) {
+    boolean isBelongToTimeRelatedNotice(Date submitDate) {
         if (isWriteOff(submitDate) || isBelongToWriteOffNotice(submitDate) || isBelongToDistanceRelatedNotice(submitDate)) {
             return false;
         }
@@ -55,7 +56,7 @@ public class Taxi {
         return noticeDate.compareTo(submitDate) <= 0;
     }
 
-    public boolean isBelongToWriteOffNotice(Date submitDate) {
+    boolean isBelongToWriteOffNotice(Date submitDate) {
         if (isWriteOff(submitDate)) {
             return false;
         }
@@ -63,19 +64,19 @@ public class Taxi {
         return noticeDate.compareTo(submitDate) <= 0;
     }
 
-    public String getCarNumber() {
+    String getCarNumber() {
         return carNumber;
     }
 
-    public void setCarNumber(String carNumber) {
+    void setCarNumber(String carNumber) {
         this.carNumber = carNumber;
     }
 
-    public Date getPurchaseTime() {
+    private Date getPurchaseTime() {
         return purchaseTime;
     }
 
-    public void setPurchaseTime(String formattedDateString) {
+    void setPurchaseTime(String formattedDateString) {
         try {
             purchaseTime = new SimpleDateFormat("yyyy/MM/dd").parse(formattedDateString);
         } catch (ParseException e) {
@@ -83,35 +84,35 @@ public class Taxi {
         }
     }
 
-    public int getMileage() {
+    private int getMileage() {
         return mileage;
     }
 
-    public void setMileage(int mileage) {
+    void setMileage(int mileage) {
         this.mileage = mileage;
     }
 
-    public String getBrand() {
+    String getBrand() {
         return brand;
     }
 
-    public void setBrand(String brand) {
+    void setBrand(String brand) {
         this.brand = brand;
     }
 
-    public boolean isOverHaul() {
+    private boolean isOverHaul() {
         return overHaul;
     }
 
-    public void setOverHaul(boolean overHaul) {
+    void setOverHaul(boolean overHaul) {
         this.overHaul = overHaul;
     }
 
-    public Date getWriteOffDate() {
+    private Date getWriteOffDate() {
         if (isOverHaul()) {
-            return DateUtils.addDays(getPurchaseTime(), 3 * 365);
+            return DateUtils.addDays(getPurchaseTime(), OVERHAUL_WRITE_OFF_TIME);
         } else {
-            return DateUtils.addDays(getPurchaseTime(), 6 * 365);
+            return DateUtils.addDays(getPurchaseTime(), NOT_OVERHAUL_WRITE_OFF_TIME);
         }
     }
 

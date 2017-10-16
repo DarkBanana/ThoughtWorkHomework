@@ -5,11 +5,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-public class Main {
+public class Homework {
 
     public String run(String tableString) {
         InfoTable infoTable = InfoTable.fromString(tableString);
-        return parse(infoTable);
+        String result = parse(infoTable);
+        System.out.println(result);
+        return result;
     }
 
     private void addToResultMap(Map<String, List<Taxi>> map, Taxi taxi) {
@@ -28,7 +30,7 @@ public class Main {
         Date submitDate = table.getSubmitDate();
         List<Taxi> taxis = table.getTaxis();
 
-        Map<String, List<Taxi>> timeRelated = new ResultMap<>("Time-related maintenance");//TODO
+        Map<String, List<Taxi>> timeRelated = new ResultMap<>("Time-related maintenance");
         Map<String, List<Taxi>> distanceRelated = new ResultMap<>("Distance-related maintenance");
         Map<String, List<Taxi>> writeOff = new ResultMap<>("Write-off");
 
@@ -43,10 +45,7 @@ public class Main {
             }
         }
 
-        String result = resultToString(timeRelated, distanceRelated, writeOff);
-        System.out.println(result);
-
-        return result;
+        return resultToString(timeRelated, distanceRelated, writeOff);
     }
 
     private String resultToString(Map<String, List<Taxi>> timeRelatedMap, Map<String, List<Taxi>> distanceRelatedMap, Map<String, List<Taxi>> writeOffMap) {

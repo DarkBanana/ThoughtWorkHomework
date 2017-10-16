@@ -21,7 +21,7 @@ public class ResultMap<K, V> extends TreeMap<K, V> {
                 ) {
             String key = (String) e.getKey();
             @SuppressWarnings("unchecked")
-            List<Taxi> value = (List<Taxi>) e.getValue();//TODO
+            List<Taxi> value = (List<Taxi>) e.getValue();
             sb.append(key).append(": ").append(value.size()).append(" (");
             for (Taxi item : value) {
                 sb.append(item.getCarNumber()).append(',');

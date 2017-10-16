@@ -1,6 +1,6 @@
 package test;
 
-import main.Main;
+import main.Homework;
 import org.junit.jupiter.api.Test;
 
 class HomeworkTest {
@@ -32,7 +32,7 @@ class HomeworkTest {
                 "* Write-off coming soon...\n" +
                 "BYD: 1 (CAR0004)\n" +
                 "Ford: 1 (CAR0009)\n";
-        String myResult = new Main().run(tableString);
+        String myResult = new Homework().run(tableString);
 
         System.out.println(testIsTrue(trueResult, myResult));
     }
@@ -59,7 +59,7 @@ class HomeworkTest {
                 "* Write-off coming soon...\n" +
                 "BMW: 1 (CAR0002)\n" +
                 "Honda: 1 (CAR0004)\n";
-        String myResult = new Main().run(tableString);
+        String myResult = new Homework().run(tableString);
 
         System.out.println(testIsTrue(trueResult, myResult));
     }

@@ -34,12 +34,7 @@ class HomeworkTest {
                 "Ford: 1 (CAR0009)\n";
         String myResult = new Main().run(tableString);
 
-        System.out.println(trueResult);
-        System.out.println(trueResult.length());
-        System.out.println(myResult.length());
-        if (myResult.equals(trueResult)) {
-            System.out.println("正确！");
-        }
+        System.out.println(testIsTrue(trueResult, myResult));
     }
 
     /**
@@ -66,12 +61,11 @@ class HomeworkTest {
                 "Honda: 1 (CAR0004)\n";
         String myResult = new Main().run(tableString);
 
-        System.out.println(trueResult);
-        System.out.println(trueResult.length());
-        System.out.println(myResult.length());
-        if (myResult.equals(trueResult)) {
-            System.out.println("正确！");
-        }
+        System.out.println(testIsTrue(trueResult, myResult));
+    }
+
+    private boolean testIsTrue(String a, String b) {
+        return a.equals(b);
     }
 
 }

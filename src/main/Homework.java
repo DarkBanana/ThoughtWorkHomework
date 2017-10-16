@@ -1,9 +1,6 @@
 package main;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Homework {
 
@@ -26,33 +23,37 @@ public class Homework {
         }
     }
 
+    private ResultReport createResultReport(String typeMessage) {
+        return new ResultReport(typeMessage, new TreeMap<>());
+    }
+
     private String parse(InfoTable table) {
         Date submitDate = table.getSubmitDate();
         List<Taxi> taxis = table.getTaxis();
 
-        Map<String, List<Taxi>> timeRelated = new ResultMap<>("Time-related maintenance");
-        Map<String, List<Taxi>> distanceRelated = new ResultMap<>("Distance-related maintenance");
-        Map<String, List<Taxi>> writeOff = new ResultMap<>("Write-off");
+        ResultReport timeRelated = createResultReport("Time-related maintenance");
+        ResultReport distanceRelated = createResultReport("Distance-related maintenance");
+        ResultReport writeOff = createResultReport("Write-off");
 
         for (Taxi taxi : taxis
                 ) {
             if (taxi.isBelongToWriteOffNotice(submitDate)) { //报废提醒
-                addToResultMap(writeOff, taxi);
+                addToResultMap(writeOff.getResultMap(), taxi);
             } else if (taxi.isBelongToDistanceRelatedNotice(submitDate)) { //每1万公里保养提醒
-                addToResultMap(distanceRelated, taxi);
+                addToResultMap(distanceRelated.getResultMap(), taxi);
             } else if (taxi.isBelongToTimeRelatedNotice(submitDate)) { //定期保养提醒
-                addToResultMap(timeRelated, taxi);
+                addToResultMap(timeRelated.getResultMap(), taxi);
             }
         }
 
         return resultToString(timeRelated, distanceRelated, writeOff);
     }
 
-    private String resultToString(Map<String, List<Taxi>> timeRelatedMap, Map<String, List<Taxi>> distanceRelatedMap, Map<String, List<Taxi>> writeOffMap) {
+    private String resultToString(ResultReport timeRelated, ResultReport distanceRelated, ResultReport writeOffMap) {
         return "Reminder\n" +
                 "==================\n\n" +
-                timeRelatedMap.toString() + "\n" +
-                distanceRelatedMap.toString() + "\n" +
+                timeRelated.toString() + "\n" +
+                distanceRelated.toString() + "\n" +
                 writeOffMap.toString();
     }
 
